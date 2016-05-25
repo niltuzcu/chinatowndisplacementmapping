@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Chinatown Project</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/simple-sidebar.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <!-- Custom CSS -->
+    <style>
+    body {
+        padding-top: 50px;
+        /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+    }
+    </style>
+</head>
+
+
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" onclick="showHome();"href="#">CHINATOWN DISPLACEMENT PROJECT</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <p class="navbar-btn navbar-right">
+                        <a id="appbutton"class="btn btn-danger" href="#" role="button">Report Eviction</a>
+                 </p>
+                    <li>
+                        <a href="#" onclick="showAbout();">ABOUT</a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="showData();">DATA</a>
+                    </li>
+                    <li>
+                        <a href="#"onclick="showVideo();" >VIDEO</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+    <!-- End of Navigation -->
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                 <li class="sidebar-brand">
+                    <p><i class="fa fa-map-marker"></i> Location</p>
+                </li>
+                <li>
+                    <div class="checkbox">
+                        <label id="evictionColor"><input id="evictioncheck" type="checkbox">Eviction Sites</label>
+                        <p id="evictionMarkerText"> Click on markers for more Info</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="checkbox">
+                        <label id="developmentColor"><input id="developmentcheck" type="checkbox" value="">Development Projects</label>
+                        <p id="developmentMarkerText"> Click on markers for more Info</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="checkbox">
+                        <label id="assetColor"><input id="assetcheck" type="checkbox" value="">Community Assets</label>
+                        <p id="assetMarkerText"> Click on markers for more Info</p>
+                    </div>
+                </li>
+                    <li>
+                    <div class="checkbox">
+                        <label id="propertyColor"><input id="propertycheck" type="checkbox" value="">Community Properties</label>
+                        <p id="propertyMarkerText"> Click on markers for more Info</p>
+                    </div>
+                </li>
+                <li class="sidebar-brand">
+                    <p><i class="fa fa-map-o"></i> Aerial Photos</p>
+                </li>
+                <li>
+                    <div class="checkbox">
+                        <label><input id="image1990" type="checkbox" value="">1990s Ortho Imagery</label>
+                    </div>
+                    <input id="slider1" type="range" min="0" max="1" step="0.1" value="0.5" onchange="updateOpacity1990(this.value)">
+                </li>
+                <li>
+                    <div class="checkbox">
+                        <label><input id="image2001" type="checkbox" value="">2001 Ortho Imagery</label>
+                    </div>
+                    <input id="slider2" type="range" min="0" max="1" step="0.1" value="0.5" onchange="updateOpacity2001(this.value)">
+                </li>
+                <li>
+                    <div class="checkbox">
+                        <label><input id="image2005" type="checkbox" value="">2005 Ortho Imagery</label>
+                    </div>
+                    <input id="slider3" type="range" min="0" max="1" step="0.1" value="1" onchange="updateOpacity2005(this.value)">
+                </li>
+                <li>
+                    <div class="checkbox">
+                        <label><input id="image2008" type="checkbox" value="">2008-9 Ortho Imagery</label>
+                    </div>
+                    <input id="slider4" type="range" min="0" max="1" step="0.1" value="0.5" onchange="updateOpacity2008(this.value)">
+                </li>
+                <li>
+                    <div class="checkbox">
+                        <label><input id="image2011" type="checkbox" value="">20011-12 Ortho Imagery</label>
+                    </div>
+                    <input id="slider5" type="range" min="0" max="1" step="0.1" value="0.5" onchange="updateOpacity2011(this.value)">
+                </li>
+                <li>
+                    <div class="checkbox">
+                        <label><input id="image2013" type="checkbox" value="">2013-14 Ortho Imagery</label>
+                    </div>
+                    <input id="slider6" type="range" min="0" max="1" step="0.1" value="0.5" onchange="updateOpacity2013(this.value)">
+                </li>
+                <li>
+                    <div class="checkbox">
+                        <label><input id="image2015" type="checkbox" value="">2015 Ortho Imagery</label>
+                    </div>
+                    <input id="slider7" type="range" min="0" max="1" step="0.1" value="0.5" onchange="updateOpacity2015(this.value)">
+                </li>
+            </ul>
+        </div>
+        <!-- End of Sidebar -->
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+            <div class="col-lg-12">
+                
+    <!-- Our web map and content will go here -->
+    <div id="map" style="width: 100%; height: 100vh"></div>
+
+    <script src="https://cdn.jsdelivr.net/leaflet/1.0.0-beta.2/leaflet.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/leaflet.esri/2.0.0-beta.8/esri-leaflet.js"></script>
+    <script src="js/bootstrap.js"></script>
+
+    <script>
+
+    $(document).ready(function() { 
+    $("#aboutModal").modal("show") 
+    });
+
+    $("#appbutton").click(function() {
+    $("#appModal").modal("show") 
+    });
+
+        // Web map code
+        var map = L.map('map', {zoomControl:false} ).setView([42.348898, -71.061330], 16);
+
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
+            maxZoom: 18,
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+                '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+            id: 'mapbox.light'
+        }).addTo(map);
+
+        
+
+        // Null variable that will hold data
+        var evictionPoints = null;
+        var developmentPoints = null;
+        var assetPoints = null;
+        var propertyPoints = null;
+        var imageHolder1990 = null;
+        var imageHolder2001 = null;
+        var imageHolder2005 = null;
+        var imageHolder2008 = null;
+        var imageHolder20011 = null;
+        var imageHolder2013 = null;
+        var imageHolder2015 = null;
+        
+        // Function for popup content
+        function onEachFeature(feature, layer) {
+            console.log(layer.options.fillColor);
+            var popupContent = "<table><tr><td style='font-weight:bold; color:"+layer.options.fillColor+"'>"+ "Name:  "+ " </td><td>"+ feature.properties.name+" </td></tr>";
+
+             if (feature.properties.kind != null)
+                popupContent+= "<tr><td style='font-weight:bold; color:"+layer.options.fillColor+"'>"+ "Type:  "+ " </td><td>"+ feature.properties.kind+" </td></tr>";
+
+            if (feature.properties.detail != null)
+                popupContent+= "<tr><td style='font-weight:bold; color:"+layer.options.fillColor+"'>"+ "Detail:  "+ " </td><td>"+ feature.properties.detail+" </td></tr>";
+
+            if (feature.properties.unit != null)
+                popupContent+= "<tr><td style='font-weight:bold; color:"+layer.options.fillColor+"'>"+ "Units:  "+ " </td><td>"+ feature.properties.unit+" </td></tr>";
+
+            
+            if (feature.properties.address != null)
+                popupContent+= "<tr><td style='font-weight:bold; color:"+layer.options.fillColor+"'>"+ "Address:  "+ " </td><td>"+ feature.properties.address+" </td></tr></table>";
+
+            layer.bindPopup(popupContent);
+        };
+
+
+
+        // Function to add Locations
+
+        function addEvictionPoints(){
+
+        var geojsonMarkerOptions = {
+            radius: 8,
+            fillColor: "#D46A6A",
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.8,
+            stroke: false,
+        };
+
+        $.getJSON("data/evictionsites.geojson",function(data){
+                // set pins to GeoJSON, add GeoJSON layer to the map once the file is loaded
+                evictionPoints = L.geoJson(data, {
+    
+            style: function (feature) {
+                return feature.properties && feature.properties.style;
+            },
+
+
+            pointToLayer: function (feature, latlng) {
+            return L.circleMarker(latlng, geojsonMarkerOptions);
+            },
+             onEachFeature: onEachFeature,
+
+            }).addTo(map);
+
+            });
+        };
+
+
+
+        function addDevelopmentPoints(){
+
+        var geojsonMarkerOptions = {
+            radius: 8,
+            fillColor: "#226666",
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.8,
+            stroke: false,
+        };
+
+        $.getJSON("data/newdevelopment.geojson",function(data){
+                // set pins to GeoJSON, add GeoJSON layer to the map once the file is loaded
+                developmentPoints = L.geoJson(data, {
+    
+            style: function (feature) {
+                return feature.properties && feature.properties.style;
+            },
+
+
+            pointToLayer: function (feature, latlng) {
+            return L.circleMarker(latlng, geojsonMarkerOptions);
+            },
+             onEachFeature: onEachFeature,
+
+            }).addTo(map);
+
+            });
+        };
+
+        function addAssetPoints(){
+
+        var geojsonMarkerOptions = {
+            radius: 8,
+            fillColor: "#AA6C39",
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.8,
+            stroke: false,
+        };
+
+        $.getJSON("data/communityassets.geojson",function(data){
+                // set pins to GeoJSON, add GeoJSON layer to the map once the file is loaded
+                assetPoints = L.geoJson(data, {
+    
+            style: function (feature) {
+                return feature.properties && feature.properties.style;
+            },
+
+
+            pointToLayer: function (feature, latlng) {
+            return L.circleMarker(latlng, geojsonMarkerOptions);
+            },
+             onEachFeature: onEachFeature,
+
+            }).addTo(map);
+
+            });
+        };
+
+        function addPropertyPoints(){
+
+        var geojsonMarkerOptions = {
+            radius: 8,
+            fillColor: "#2D882D",
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.8,
+            stroke: false,
+        };
+
+        $.getJSON("data/communityproperties.geojson",function(data){
+                // set pins to GeoJSON, add GeoJSON layer to the map once the file is loaded
+                propertyPoints = L.geoJson(data, {
+    
+            style: function (feature) {
+                return feature.properties && feature.properties.style;
+            },
+
+
+            pointToLayer: function (feature, latlng) {
+            return L.circleMarker(latlng, geojsonMarkerOptions);
+            },
+             onEachFeature: onEachFeature,
+
+            }).addTo(map);
+
+            });
+        };
+
+        // Function to remove Locations
+        function removeDevelopmentPoints(){
+            map.removeLayer(developmentPoints);
+        };
+
+        function removeEvictionPoints(){
+            map.removeLayer(evictionPoints);
+        };
+
+        function removeAssetPoints(){
+            map.removeLayer(assetPoints);
+        };
+
+        function removePropertyPoints(){
+            map.removeLayer(propertyPoints);
+        };
+
+
+        // Functions to Images
+
+        function addImage1990(){
+        imageHolder1990= L.esri.tiledMapLayer({
+        url: "http://tiles.arcgis.com/tiles/hGdibHYSPO59RG1h/arcgis/rest/services/BW_Orthos_Tile_Package/MapServer/"
+            }).addTo(map);
+        };
+
+        function addImage2001(){
+       // imageHolder20081 = L.tileLayer('/boston20081/{z}/{x}/{y}.png').addTo(map);
+        //imageHolder20082 = L.tileLayer('/boston20082/{z}/{x}/{y}.png').addTo(map);
+         imageHolder2001= L.esri.tiledMapLayer({
+    url: "http://tiles.arcgis.com/tiles/hGdibHYSPO59RG1h/arcgis/rest/services/orthos_2001_tile_package/MapServer/"
+  }).addTo(map);
+        };
+
+         function addImage2005(){
+         imageHolder2005= L.esri.tiledMapLayer({
+    url: "http://tiles.arcgis.com/tiles/hGdibHYSPO59RG1h/arcgis/rest/services/orthos2005_tile_package/MapServer/"
+  }).addTo(map);
+        };
+
+         function addImage2008(){
+         imageHolder2008= L.esri.tiledMapLayer({
+    url: "http://tiles.arcgis.com/tiles/hGdibHYSPO59RG1h/arcgis/rest/services/coq0809_from_sids_package/MapServer"
+  }).addTo(map);
+        };
+
+         function addImage2011(){
+         imageHolder2011= L.esri.tiledMapLayer({
+    url: "http://tiles.arcgis.com/tiles/hGdibHYSPO59RG1h/arcgis/rest/services/DigitalGlobe_2011_2012/MapServer"
+  }).addTo(map);
+        };
+
+         function addImage2013(){
+         imageHolder2013= L.esri.tiledMapLayer({
+    url: "http://tiles.arcgis.com/tiles/hGdibHYSPO59RG1h/arcgis/rest/services/USGS_Orthos_2013_2014/MapServer"
+  }).addTo(map);
+        };
+
+        function addImage2015(){
+         imageHolder2015= L.esri.tiledMapLayer({
+    url: "http://tiles.arcgis.com/tiles/hGdibHYSPO59RG1h/arcgis/rest/services/imagery2015/MapServer"
+  }).addTo(map);
+        };
+
+    //Functions to remove Images 
+        function removeImage1990(){
+            map.removeLayer(imageHolder1990);
+        };
+
+        function removeImage2001(){
+            map.removeLayer(imageHolder2001);
+        };
+
+        function removeImage2005(){
+            map.removeLayer(imageHolder2005);
+        };
+
+        function removeImage2008(){
+            map.removeLayer(imageHolder2008);
+        };
+
+        function removeImage2011(){
+            map.removeLayer(imageHolder2011);
+        };
+        function removeImage2013(){
+            map.removeLayer(imageHolder2013);
+        };
+        function removeImage2015(){
+            map.removeLayer(imageHolder2015);
+        };
+
+
+
+    // Call Checkbox IDs 
+
+    $("#evictioncheck").change(function() {
+                    if(this.checked) {
+                addEvictionPoints();
+                $("#evictionColor").addClass("evictiontext");
+                $("#evictionMarkerText").show();
+            }
+                    else{
+                        removeEvictionPoints();
+                        $("#evictionColor").removeClass("evictiontext");
+                        $("#evictionMarkerText").hide();
+                    }
+        });
+
+    $("#developmentcheck").change(function() {
+                    if(this.checked) {
+                addDevelopmentPoints();
+                $("#developmentColor").addClass("developmenttext");
+                $("#developmentMarkerText").show();
+            }
+                    else{
+                        removeDevelopmentPoints();
+                        $("#developmentColor").removeClass("developmenttext");
+                        $("#developmentMarkerText").hide();
+                    }
+        });
+
+    $("#assetcheck").change(function() {
+                    if(this.checked) {
+                addAssetPoints();
+                $("#assetColor").addClass("assettext");
+                $("#assetMarkerText").show();
+            }
+                    else{
+                        removeAssetPoints();
+                        $("#assetColor").removeClass("assettext");
+                        $("#assetMarkerText").hide();
+                    }
+        });
+
+    $("#propertycheck").change(function() {
+                    if(this.checked) {
+                addPropertyPoints();
+                $("#propertyColor").addClass("propertytext");
+                $("#propertyMarkerText").show();
+            }
+                    else{
+                        removePropertyPoints();
+                        $("#propertyColor").removeClass("propertytext");
+                        $("#propertyMarkerText").hide();
+                    }
+        });
+
+    $("#image1990").change(function() {
+                    if(this.checked) {
+                addImage1990();
+                $("#slider1").show();
+            }
+                    else{
+                        removeImage1990();
+                        $("#slider1").hide();
+                    }
+        });
+
+    $("#image2001").change(function() {
+                    if(this.checked) {
+                addImage2001();
+                $("#slider2").show();
+            }
+                    else{
+                        removeImage2001();
+                        $("#slider2").hide();
+                    }
+        });
+
+    $("#image2005").change(function() {
+                    if(this.checked) {
+                addImage2005();
+                $("#slider3").show();
+            }
+                    else{
+                        removeImage2005();
+                        $("#slider3").hide();
+                    }
+        });
+
+    $("#image2008").change(function() {
+                    if(this.checked) {
+                addImage2008();
+                $("#slider4").show();
+            }
+                    else{
+                        removeImage2008();
+                        $("#slider4").hide();
+                    }
+        });
+
+    $("#image2011").change(function() {
+                    if(this.checked) {
+                addImage2011();
+                $("#slider5").show();
+            }
+                    else{
+                        removeImage2011();
+                        $("#slider5").hide();
+                    }
+        });
+
+    $("#image2013").change(function() {
+                    if(this.checked) {
+                addImage2013();
+                $("#slider6").show();
+            }
+                    else{
+                        removeImage2013();
+                        $("#slider6").hide();
+                    }
+        });
+
+    $("#image2015").change(function() {
+                    if(this.checked) {
+                addImage2015();
+                $("#slider7").show();
+            }
+                    else{
+                        removeImage2015();
+                        $("#slider7").hide();
+                    }
+        });
+
+
+    // Opacity Control 
+
+    function updateOpacity1990(value) {
+    imageHolder1990.setOpacity(value);
+    }
+
+    function updateOpacity2001(value) {
+    imageHolder2001.setOpacity(value);
+    }
+
+    function updateOpacity2005(value) {
+    imageHolder2005.setOpacity(value);
+    }
+
+    function updateOpacity2008(value) {
+    imageHolder2008.setOpacity(value);
+    }
+
+    function updateOpacity2011(value) {
+    imageHolder2011.setOpacity(value);
+    }
+
+    function updateOpacity2013(value) {
+    imageHolder2013.setOpacity(value);
+    }
+
+    function updateOpacity2015(value) {
+    imageHolder2015.setOpacity(value);
+    }
+
+
+    // Button Control 
+        $("#buttonname").click(function() {
+    $(this).text(function(i, text){
+          return text === "Hide Map Layers" ? "Open Map Layers" : "Hide Map Layers";
+      })
+    $(".btn-primary").toggleClass('btn-warning');
+    });
+
+    // Hides 
+    $("#slider1").hide();
+    $("#slider2").hide();
+    $("#slider3").hide();
+    $("#slider4").hide();
+    $("#slider5").hide();
+    $("#slider6").hide();
+    $("#slider7").hide();
+    $("#developmentMarkerText").hide();
+    $("#evictionMarkerText").hide();
+    $("#assetMarkerText").hide();
+    $("#propertyMarkerText").hide();
+    $("#about").hide();
+    $("#video").hide();
+
+    // Navbar Menu
+    function showAbout() {
+    $("#about").show();
+    $("#wrapper").hide();
+    $("#video").hide();
+    }
+
+    function showVideo() {
+    $("#video").show();
+    $("#wrapper").hide();
+    $("#about").hide();
+    }
+
+    function showHome() {
+    $("#video").hide();
+    $("#wrapper").show();
+    $("#about").hide();
+    }
+
+    $(map.getContainer()).removeClass("leaflet-container");
+
+    </script>
+
+
+            </div>
+        </div>
+        <!-- /.row -->
+
+    </div>
+    <!-- /.container -->
+</div>
+ <!-- /#wrapper -->
+
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+
+
+
+<div id="about"> 
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <p class="lead">Chinatown Displacement Project is a data collecting and mapping platform documenting the gentrification and displacement in Chinatown, Boston. The platform is developed by MIT's <a href='www.mitdisplacement.org'>Displacement Research and Action Network</a> in collaboration with the <a href='http://cpaboston.org/'>Chinese Progressive Association</a>.</p>
+                <hr class="m-y-2">
+                <p class="lead">Boston’s Chinatown is the third-largest Chinatown in the nation and serves as the social, cultural, political, and economic center of the broader Chinese community of New England. Today, the neighborhood is one of the most rapidly gentrifying part of the city, where new luxury residential developments drive up property values. As a result, hundreds of families were displaced and many are at risk of being evicted. Through creating exploratory and interactive visual representation of displacement and market-led gentrification, we aim to support advocacy work of organizations preventing and responding to evictions and displacement.</p>
+                <hr class="m-y-2">
+                 <p>For inquiries about this platform please reach Nil Tuzcu at tuzcu@mit.edu</p>
+            </div>
+        </div>
+<img src="dranlogo.jpg" height="100px">
+    </div>
+</div>
+
+<div id="video"> 
+    <div class = "container-fluid">
+         <div class ="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <p style="font-weight: bold;font-size:x-large;color:#a6a6a6">Chinatown-Boston Luxury Development Projects</p>
+                <iframe width="853" height="480" src="https://www.youtube.com/embed/otr1H69ReX4?rel=0" frameborder="0" allowfullscreen></iframe>
+    </div>
+        </div>
+            </div>
+</div>
+
+<!-- MODAL TUTORIAL -->
+<div id="aboutModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+         <div class="modal-dialog">
+    <div class="modal-content">
+             <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 style="width:500px; margin-left:auto; margin-right:auto; display:block" id="myModalLabel">CHINATOWN DISPLACEMENT PROJECT</h3>
+      </div>
+             <div class="modal-body">
+             <img style="width:500px; margin-left:auto; margin-right:auto; display: block" src="tutorial1.gif">
+             <br>
+              <p> You will use left sidebar to view different information layers of the map. Click checkboxes to view eviction sites, development projects, community assets and community properties on the map. Click on circle markers to get more information. You can change the opacity of each aerial imagery with the sliding bars located at the bottom of imagery names.</p>
+      </div>
+
+        <div class="modal-footer">
+        <!--button class="btn" id="modalInfoBtn">More Info Here</button-->
+        <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">OK!</button>
+      </div>
+           </div>
+  </div>
+ </div>
+
+ <!-- MODAL TUTORIAL -->
+<div id="appModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+         <div class="modal-dialog">
+    <div class="modal-content">
+             <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 style="width:500px; margin-left:auto; margin-right:auto; display:block" id="myModalLabel">DATA COLLECTING APPLICATION</h3>
+      </div>
+             <div class="modal-body">
+             <img style="width:550px; margin-left:auto; margin-right:auto; display: block" src="displacement.gif">
+             <br>
+             <h4 style="text-align: center">Please check back for more information!</h4>
+      </div>
+
+        <div class="modal-footer">
+        <!--button class="btn" id="modalInfoBtn">More Info Here</button-->
+        <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
+      </div>
+           </div>
+  </div>
+ </div>
+
+</body>
+
+</html>
+
+
+
+
